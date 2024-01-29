@@ -3,7 +3,7 @@ import json
 import os
 import logging
 
-from ceda_ard_finder.CedaElasticsearchQueryer import CedaElasticsearchQueryer
+from .CedaElasticsearchQueryer import CedaElasticsearchQueryer
 
 #https://elasticsearch.ceda.ac.uk/ceda-eo/_search
 #"POLYGON((-3.8295000316687355 53.23354636293673, -2.7418535472937355 53.23354636293673, -2.7418535472937355 52.484002471274685, -3.8295000316687355 52.484002471274685, -3.8295000316687355 53.23354636293673))"

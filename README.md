@@ -17,6 +17,23 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+# Integrating this worklow into another using a python package
+
+```
+pip install git+https://github.com/jncc/ceda_ard_finder.git
+```
+
+Then import the required tasks into your workflow and use them:
+
+```
+...
+from ceda_ard_finder import CreateSymlinks
+
+@requires(CreateSymlinks)
+class GetArdProducts(luigi.Task):
+    ...
+```
+
 ## Setup and runnning 
 
 All search filters are optional except startDate and endDate. See ceda-ard-finder-luigi.cfg.example for more filter examples.

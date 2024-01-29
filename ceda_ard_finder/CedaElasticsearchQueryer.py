@@ -1,5 +1,4 @@
 from elasticsearch import Elasticsearch
-import re
 import logging
 import json
 

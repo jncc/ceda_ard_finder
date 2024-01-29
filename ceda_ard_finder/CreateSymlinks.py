@@ -4,7 +4,7 @@ import os
 import logging
 
 from luigi.util import requires
-from ceda_ard_finder.SearchForProducts import SearchForProducts
+from .SearchForProducts import SearchForProducts
 
 log = logging.getLogger("luigi-interface")
 
