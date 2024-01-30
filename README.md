@@ -2,6 +2,8 @@
 
 Find ARD in CEDA by searching using their Elasticsearch API.
 
+[The CEDA data portal ARD data](https://catalogue.ceda.ac.uk/uuid/bf9568b558204b81803eeebcc7f529ef)
+
 ## Installation and setup
 
 Create virtual env

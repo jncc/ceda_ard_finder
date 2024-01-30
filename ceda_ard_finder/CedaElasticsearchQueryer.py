@@ -112,7 +112,7 @@ class CedaElasticsearchQueryer:
             }
         })
     
-    def addQrbitDirectionFilter(self, orbitDirection):
+    def addOrbitDirectionFilter(self, orbitDirection):
         direction = orbitDirection.lower()
         if direction not in self.orbitDirection:
             raise Exception(f"Orbit direction not in allowed list, found {direction}")

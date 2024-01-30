@@ -67,7 +67,7 @@ class SearchForProducts(luigi.Task):
       queryer.addOrbitFilter(self.orbit)
 
     if self.orbitDirection != "":
-      queryer.addQrbitDirectionFilter(self.orbitDirection)
+      queryer.addOrbitDirectionFilter(self.orbitDirection)
 
     productList = self.queryAllResults(queryer)
     
