@@ -107,8 +107,11 @@ class CedaElasticsearchQueryer:
 
     def addOrbitFilter(self, orbit):
         self.arguments.append({
-            "wildcard": {
-                "file.data_file": f"*_{orbit}_*"
+           "wildcard": {
+                "file.data_file": {
+                    "value": f"*_{orbit}_*",
+                    "case_insensitive": "true"
+                }
             }
         })
     
@@ -119,14 +122,20 @@ class CedaElasticsearchQueryer:
 
         self.arguments.append({
             "wildcard": {
-                "file.data_file": f"*_{direction}_*"
+                "file.data_file": {
+                    "value": f"*_{direction}_*",
+                    "case_insensitive": "true"
+                }
             }
         })
 
     def addArdFilter(self, ardFile):
         self.arguments.append({
             "wildcard": {
-                "file.data_file": f"{ardFile.lower()}*"
+                "file.data_file": {
+                    "value": f"{ardFile}*",
+                    "case_insensitive": "true"
+                }
             }
         })
 
