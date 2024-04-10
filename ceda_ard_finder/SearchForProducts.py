@@ -12,6 +12,7 @@ log = logging.getLogger("luigi-interface")
 
 class SearchForProducts(luigi.Task):
   stateLocation = luigi.Parameter()
+  ardFilter = luigi.Parameter(default="")
 
   # search filters
   startDate = luigi.DateParameter()
@@ -68,6 +69,12 @@ class SearchForProducts(luigi.Task):
 
     if self.orbitDirection != "":
       queryer.addOrbitDirectionFilter(self.orbitDirection)
+
+    if self.ardFilter != "":
+      queryer.addArdFilter(self.ardFilter)
+
+      if self.satelliteFilter == "":
+        queryer.addSatelliteFilters([f"Sentinel-{self.ardFilter.strip()[1:3]} ARD"])
 
     productList = self.queryAllResults(queryer)
     

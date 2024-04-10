@@ -123,6 +123,13 @@ class CedaElasticsearchQueryer:
             }
         })
 
+    def addArdFilter(self, ardFile):
+        self.arguments.append({
+            "wildcard": {
+                "file.data_file": f"{ardFile.lower()}*"
+            }
+        })
+
     def buildQuery(self, start, size):
         return {
             "_source": {
