@@ -2,6 +2,7 @@ import luigi
 import json
 import os
 import logging
+import re
 
 from .CedaElasticsearchQueryer import CedaElasticsearchQueryer
 
@@ -33,6 +34,10 @@ class SearchForProducts(luigi.Task):
     for result in results['hits']['hits']:
       dataFilepath = os.path.join(result['_source']['file']['directory'], result['_source']['file']['data_file'])
       productList.append(dataFilepath)
+
+      if result['_source']['file']['data_file'].startswith("S2"):
+        productList.append(re.sub(r"_osgb_(.*)\.tif$" , "_osgb_clouds.tif", dataFilepath))
+        productList.append(re.sub(r"_osgb_(.*)\.tif$" , "_osgb_toposhad.tif", dataFilepath))
 
     return productList
 
