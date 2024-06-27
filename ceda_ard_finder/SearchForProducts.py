@@ -35,10 +35,6 @@ class SearchForProducts(luigi.Task):
       dataFilepath = os.path.join(result['_source']['file']['directory'], result['_source']['file']['data_file'])
       productList.append(dataFilepath)
 
-      if result['_source']['file']['data_file'].startswith("S2"):
-        productList.append(re.sub(r"_osgb_(.*)\.tif$" , "_osgb_clouds.tif", dataFilepath))
-        productList.append(re.sub(r"_osgb_(.*)\.tif$" , "_osgb_toposhad.tif", dataFilepath))
-
     return productList
 
   def queryAllResults(self, queryer):

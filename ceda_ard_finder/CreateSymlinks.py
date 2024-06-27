@@ -2,6 +2,7 @@ import luigi
 import json
 import os
 import logging
+import re
 
 from luigi.util import requires
 from .SearchForProducts import SearchForProducts
@@ -20,6 +21,9 @@ class CreateSymlinks(luigi.Task):
 
     for product in products:
       symlinkPath = os.path.join(self.outputLocation, os.path.basename(product))
+      if os.path.basename(product).startswith("S2"):
+        os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
+        os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_toposhad.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_toposhad.tif", symlinkPath))
       os.symlink(product, symlinkPath)
     
     output = {
