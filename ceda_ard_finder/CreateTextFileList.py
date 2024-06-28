@@ -18,7 +18,7 @@ patternSets = {
 class CreateTextFileList(luigi.Task):
   startDate = luigi.DateParameter()
   endDate = luigi.DateParameter()
-  outputLocation = luigi.Parameter()
+  productLocation = luigi.Parameter()
   descriptor = luigi.Parameter(default="")
 
   @staticmethod
@@ -41,6 +41,6 @@ class CreateTextFileList(luigi.Task):
     products = [p if '/' not in p else p.rsplit('/', 1)[1] for p in products]
     products = [self.get_identifier(p) for p in products]
 
-    with open(os.path.join(self.outputLocation, filename), "w") as outfile:
+    with open(os.path.join(self.productLocation, filename), "w") as outfile:
       for product in products:
         outfile.write(f"{product}\n")

@@ -12,7 +12,7 @@ from .CedaElasticsearchQueryer import CedaElasticsearchQueryer
 log = logging.getLogger("luigi-interface")
 
 class SearchForProducts(luigi.Task):
-  stateLocation = luigi.Parameter()
+  stateFolder = luigi.Parameter()
   ardFilter = luigi.Parameter(default="")
 
   # search filters
@@ -88,7 +88,7 @@ class SearchForProducts(luigi.Task):
       outFile.write(json.dumps(output, indent=4, sort_keys=True))
   
   def output(self):
-    return luigi.LocalTarget(os.path.join(self.stateLocation, "SearchForProducts.json"))
+    return luigi.LocalTarget(os.path.join(self.stateFolder, "SearchForProducts.json"))
 
 
 

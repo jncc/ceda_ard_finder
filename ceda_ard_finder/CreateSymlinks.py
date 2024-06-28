@@ -11,8 +11,8 @@ log = logging.getLogger("luigi-interface")
 
 @requires(SearchForProducts)
 class CreateSymlinks(luigi.Task):
-  stateLocation = luigi.Parameter()
-  outputLocation = luigi.Parameter()
+  stateFolder = luigi.Parameter()
+  productLocation = luigi.Parameter()
 
   def run(self):
     products = []
@@ -20,7 +20,7 @@ class CreateSymlinks(luigi.Task):
       products = json.load(searchForProductsFile)['productList']
 
     for product in products:
-      symlinkPath = os.path.join(self.outputLocation, os.path.basename(product))
+      symlinkPath = os.path.join(self.productLocation, os.path.basename(product))
       if os.path.basename(product).startswith("S2"):
         os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
         os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_toposhad.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_toposhad.tif", symlinkPath))
@@ -34,7 +34,7 @@ class CreateSymlinks(luigi.Task):
       outFile.write(json.dumps(output, indent=4, sort_keys=True))
   
   def output(self):
-    return luigi.LocalTarget(os.path.join(self.stateLocation, "CreateSymlinks.json"))
+    return luigi.LocalTarget(os.path.join(self.stateFolder, "CreateSymlinks.json"))
 
 
 
