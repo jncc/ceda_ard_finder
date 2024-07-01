@@ -13,6 +13,7 @@ log = logging.getLogger("luigi-interface")
 class CreateSymlinks(luigi.Task):
   stateFolder = luigi.Parameter()
   productLocation = luigi.Parameter()
+  s2CloudsBasePath = luigi.Parameter(default="")
 
   def run(self):
     products = []
@@ -22,7 +23,15 @@ class CreateSymlinks(luigi.Task):
     for product in products:
       symlinkPath = os.path.join(self.productLocation, os.path.basename(product))
       if os.path.basename(product).startswith("S2"):
-        os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
+        if self.s2CloudsBasePath != "":
+          s2CustomCloud = os.path.join(self.s2CloudsBasePath, re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", os.path.basename(product)))
+          if os.path.exists(s2CustomCloud):
+            log.info("Using custom S2 clouds file: %s", s2CustomCloud)
+            os.symlink(s2CustomCloud, re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
+          else:
+            log.info("Custom S2 cloud path not found")
+        else:
+          os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
         os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_toposhad.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_toposhad.tif", symlinkPath))
       os.symlink(product, symlinkPath)
     
