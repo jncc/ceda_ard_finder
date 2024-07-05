@@ -13,7 +13,8 @@ log = logging.getLogger("luigi-interface")
 class CreateSymlinks(luigi.Task):
   stateFolder = luigi.Parameter()
   productLocation = luigi.Parameter()
-  s2CloudsBasePath = luigi.Parameter(default="")
+  ardBasePath = luigi.Parameter(default = "/neodc/sentinel_ard/data/sentinel_2/")
+  s2CloudsBasePath = luigi.Parameter()
 
   def run(self):
     products = []
@@ -23,16 +24,11 @@ class CreateSymlinks(luigi.Task):
     for product in products:
       symlinkPath = os.path.join(self.productLocation, os.path.basename(product))
       if os.path.basename(product).startswith("S2"):
-        if self.s2CloudsBasePath != "":
-          s2CustomCloud = os.path.join(self.s2CloudsBasePath, re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", os.path.basename(product)))
-          if os.path.exists(s2CustomCloud):
-            log.info("Using custom S2 clouds file: %s", s2CustomCloud)
-            os.symlink(s2CustomCloud, re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
-          else:
-            log.info("Custom S2 cloud path not found, Linking default")
-            os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
+        if re.match(rf"^{self.ardBasePath}*", product): # Check if the product is in the ARD base path since a re.sub won't fail if the pattern is not found
+          s2Cloud = os.path.join(re.sub(f"{self.ardBasePath}", f"{self.s2CloudsBasePath}", os.path.dirname(product)), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", os.path.basename(product)))
+          os.symlink(s2Cloud, re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
         else:
-          os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", symlinkPath))
+          log.warning(f"Product {product} is not in the ARD base path {self.ardBasePath}. No symlink to the clouds file will be created.")
         os.symlink(re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_toposhad.tif", product), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_toposhad.tif", symlinkPath))
       os.symlink(product, symlinkPath)
     
