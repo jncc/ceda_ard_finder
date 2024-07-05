@@ -13,7 +13,7 @@ log = logging.getLogger("luigi-interface")
 class CreateSymlinks(luigi.Task):
   stateFolder = luigi.Parameter()
   basketFolder = luigi.Parameter()
-  ardBasePath = luigi.Parameter(default = "/neodc/sentinel_ard/data/sentinel_2/")
+  ardBasePath = luigi.Parameter(default = "/neodc/sentinel_ard/data/sentinel_2")
   s2CloudsBasePath = luigi.Parameter()
 
   def run(self):
