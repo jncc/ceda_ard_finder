@@ -12,7 +12,7 @@ log = logging.getLogger("luigi-interface")
 @requires(SearchForProducts)
 class CreateSymlinks(luigi.Task):
   stateFolder = luigi.Parameter()
-  productLocation = luigi.Parameter()
+  basketFolder = luigi.Parameter()
   ardBasePath = luigi.Parameter(default = "/neodc/sentinel_ard/data/sentinel_2/")
   s2CloudsBasePath = luigi.Parameter()
 
@@ -22,7 +22,7 @@ class CreateSymlinks(luigi.Task):
       products = json.load(searchForProductsFile)['productList']
 
     for product in products:
-      symlinkPath = os.path.join(self.productLocation, os.path.basename(product))
+      symlinkPath = os.path.join(self.basketFolder, os.path.basename(product))
       if os.path.basename(product).startswith("S2"):
         if re.match(rf"^{self.ardBasePath}*", product): # Check if the product is in the ARD base path since a re.sub won't fail if the pattern is not found
           s2Cloud = os.path.join(re.sub(f"{self.ardBasePath}", f"{self.s2CloudsBasePath}", os.path.dirname(product)), re.sub(r"_vmsk_sharp_rad_srefdem_stdsref\.tif$" , "_clouds.tif", os.path.basename(product)))
