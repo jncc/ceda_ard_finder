@@ -2,7 +2,6 @@ import luigi
 import json
 import os
 import logging
-import re
 
 from .CedaElasticsearchQueryer import CedaElasticsearchQueryer
 
