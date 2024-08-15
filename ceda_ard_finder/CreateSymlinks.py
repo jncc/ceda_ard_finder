@@ -12,7 +12,7 @@ log = logging.getLogger("luigi-interface")
 @requires(SearchForProducts)
 class CreateSymlinks(luigi.Task):
     stateFolder = luigi.Parameter()
-    basketFolder = luigi.Parameter()
+    productLocation = luigi.Parameter()
 
     def run(self):
         products = []
@@ -20,7 +20,7 @@ class CreateSymlinks(luigi.Task):
             products = json.load(searchForProductsFile)['productList']
 
         for product in products:
-            symlinkPath = os.path.join(self.basketFolder, os.path.basename(product))
+            symlinkPath = os.path.join(self.productLocation, os.path.basename(product))
             os.symlink(product, symlinkPath)
 
         output = {
