@@ -1,5 +1,5 @@
 import setuptools
- 
+
 setuptools.setup(
     name="ceda_ard_finder",
     version="0.0.1",

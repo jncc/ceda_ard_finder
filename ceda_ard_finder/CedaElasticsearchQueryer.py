@@ -4,6 +4,7 @@ import json
 
 log = logging.getLogger("luigi-interface")
 
+
 class CedaElasticsearchQueryer:
     client = None
     arguments = []
@@ -98,7 +99,7 @@ class CedaElasticsearchQueryer:
         for satellite in satellites:
             if satellite not in self.satellites:
                 raise ValueError(f'Satellite not in allowed list, found {satellite}')
-        
+
         self.arguments.append({
             "terms": {
                 "misc.platform.Satellite.raw": satellites
@@ -108,10 +109,13 @@ class CedaElasticsearchQueryer:
     def addOrbitFilter(self, orbit):
         self.arguments.append({
             "wildcard": {
-                "file.data_file": f"*_{orbit}_*"
+                "file.data_file": {
+                    "value": f"*_{orbit}_*",
+                    "case_insensitive": "true"
+                }
             }
         })
-    
+
     def addOrbitDirectionFilter(self, orbitDirection):
         direction = orbitDirection.lower()
         if direction not in self.orbitDirection:
@@ -119,7 +123,20 @@ class CedaElasticsearchQueryer:
 
         self.arguments.append({
             "wildcard": {
-                "file.data_file": f"*_{direction}_*"
+                "file.data_file": {
+                    "value": f"*_{direction}_*",
+                    "case_insensitive": "true"
+                }
+            }
+        })
+
+    def addArdFilter(self, ardFile):
+        self.arguments.append({
+            "wildcard": {
+                "file.data_file": {
+                    "value": f"{ardFile}*",
+                    "case_insensitive": "true"
+                }
             }
         })
 
@@ -146,7 +163,7 @@ class CedaElasticsearchQueryer:
                     }
                 }
             },
-            "sort": [{"temporal.start_time": "asc"}], # need to specify an order to ensure immutability in paged results
+            "sort": [{"temporal.start_time": "asc"}],  # need to specify an order to ensure immutability in paged results
             "track_total_hits": "true"
         }
 
