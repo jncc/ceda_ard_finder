@@ -108,9 +108,9 @@ class CedaElasticsearchQueryer:
 
     def addOrbitFilter(self, orbit):
         self.arguments.append({
-            "wildcard": {
+            "regexp": {
                 "file.data_file": {
-                    "value": f"*_{orbit}_*",
+                    "value": f".*_(ORB)?{orbit}_.*",
                     "case_insensitive": "true"
                 }
             }

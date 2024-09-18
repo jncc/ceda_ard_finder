@@ -21,7 +21,7 @@ class SearchForProducts(luigi.Task):
     wkt = luigi.Parameter(default="")
     spatialOperator = luigi.ChoiceParameter(choices=["", "intersects", "disjoint", "contains", "within"])
     satelliteFilter = luigi.Parameter(default="")
-    orbit = luigi.IntParameter(default="")
+    orbit = luigi.IntParameter(default=-9999)
     orbitDirection = luigi.Parameter(default="")
 
     elasticsearchHost = luigi.Parameter(default="elasticsearch.ceda.ac.uk")
@@ -65,7 +65,7 @@ class SearchForProducts(luigi.Task):
             satelliteFilterArray = [x.strip() for x in self.satelliteFilter.split(',')]
             queryer.addSatelliteFilters(satelliteFilterArray)
 
-        if self.orbit != "":
+        if self.orbit != -9999:
             queryer.addOrbitFilter(self.orbit)
 
         if self.orbitDirection != "":
