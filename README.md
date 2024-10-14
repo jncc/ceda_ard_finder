@@ -19,10 +19,11 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-# Integrating this worklow into another using a python package
+# Integrating this workflow into another using a python package
 
+Installing the specific version from [tags](https://github.com/jncc/ceda_ard_finder/tags) (Recommended)
 ```
-pip install git+https://github.com/jncc/ceda_ard_finder.git
+pip install git+https://github.com/jncc/ceda_ard_finder.git@v0.0.1
 ```
 
 Then import the required tasks into your workflow and use them:
@@ -34,6 +35,14 @@ from ceda_ard_finder import CreateSymlinks
 @requires(CreateSymlinks)
 class GetArdProducts(luigi.Task):
     ...
+```
+
+Add to `requirements.txt` of your workflow
+
+```
+...
+ceda_ard_finder @ git+https://git@github.com/jncc/ceda_ard_finder.git@v0.0.1
+...
 ```
 
 ## Setup and runnning 
