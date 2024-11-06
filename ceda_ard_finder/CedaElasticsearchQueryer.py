@@ -7,7 +7,6 @@ log = logging.getLogger("luigi-interface")
 
 class CedaElasticsearchQueryer:
     client = None
-    arguments = []
     satellites = [
         'LANDSAT-5',
         'LANDSAT-7',
@@ -28,7 +27,9 @@ class CedaElasticsearchQueryer:
     orbitDirection = ['asc', 'desc']
 
     def __init__(self, host, port) -> None:
-        self.client = Elasticsearch(f'https://{host}:{port}')
+        if CedaElasticsearchQueryer.client is None:
+            CedaElasticsearchQueryer.client = Elasticsearch(f'https://{host}:{port}')
+        self.arguments = []
 
     def getCoordinateList(self, coordinates):
         coordinate_list = []
