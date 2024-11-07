@@ -14,6 +14,9 @@ log = logging.getLogger("luigi-interface")
 class SearchForProducts(luigi.Task):
     stateFolder = luigi.Parameter()
     ardFilter = luigi.Parameter(default="")
+    # ardFilters = luigi.ListParameter(default=[])
+
+    _stateFileName = luigi.Parameter(default="SearchForProducts.json")
 
     # search filters
     startDate = luigi.DateParameter()
@@ -77,6 +80,10 @@ class SearchForProducts(luigi.Task):
             if self.satelliteFilter == "":
                 queryer.addSatelliteFilters([f"Sentinel-{self.ardFilter.strip()[1:3]} ARD"])
 
+        # if bool(self.ardFilter) != bool(self.ardFilters):
+        #     # Only one of these should be set
+        #     queryer.addArdFilter(self.ardFilter, self.ardFilters)
+
         productList = self.queryAllResults(queryer)
 
         output = {
@@ -88,4 +95,4 @@ class SearchForProducts(luigi.Task):
             outFile.write(json.dumps(output, indent=4, sort_keys=True))
 
     def output(self):
-        return luigi.LocalTarget(os.path.join(self.stateFolder, "SearchForProducts.json"))
+        return luigi.LocalTarget(os.path.join(self.stateFolder, self._stateFileName))

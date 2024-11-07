@@ -140,6 +140,32 @@ class CedaElasticsearchQueryer:
                 }
             }
         })
+        # if ardFiles:
+        #     q = {
+        #         "bool": {
+        #             "should": []
+        #         }
+        #     }
+
+        #     for ard in ardFiles:
+        #         q["bool"]["should"].append({
+        #             "wildcard": {
+        #                 "file.data_file": {
+        #                     "value": f"{ard}*",
+        #                     "case_insensitive": "true"
+        #                 }
+        #             }
+        #         })
+        #     self.arguments.append(q)
+        # elif ardFile:
+        #     self.arguments.append({
+        #         "wildcard": {
+        #             "file.data_file": {
+        #                 "value": f"{ardFile}*",
+        #                 "case_insensitive": "true"
+        #             }
+        #         }
+        #     })
 
     def buildQuery(self, start, size):
         return {
