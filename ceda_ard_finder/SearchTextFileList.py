@@ -17,12 +17,12 @@ class SearchTextFileList(luigi.Task):
     Searches for an exact list of files in a text file rather than using filters
     """
     stateFolder = luigi.Parameter()
-    textFile = luigi.Parameter()
+    inputsFile = luigi.Parameter()
 
     def run(self):
         searchTasks = []
 
-        with open(self.textFile, "r") as f:
+        with open(self.inputsFile, "r") as f:
             products = [x.strip() for x in f.read().splitlines()]
 
         # searchTask = SearchForProducts(
