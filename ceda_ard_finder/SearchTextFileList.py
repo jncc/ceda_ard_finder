@@ -14,15 +14,16 @@ log = logging.getLogger("luigi-interface")
 
 class SearchTextFileList(luigi.Task):
     """
-    Searches for an exact list of files in a text file rather than using filters
+    Searches for an exact list of files in a text file rather than using filters.
+    The file should be named inputs.txt and be in the productLocation folder.
     """
     stateFolder = luigi.Parameter()
-    inputsFile = luigi.Parameter()
+    productLocation = luigi.Parameter()
 
     def run(self):
         searchTasks = []
 
-        with open(self.inputsFile, "r") as f:
+        with open(os.path.join(self.productLocation, "inputs.txt"), "r") as f:
             products = [x.strip() for x in f.read().splitlines()]
 
         # searchTask = SearchForProducts(

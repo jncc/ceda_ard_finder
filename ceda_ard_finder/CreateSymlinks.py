@@ -5,11 +5,11 @@ import logging
 
 from luigi.util import requires
 from .SearchForProducts import SearchForProducts
+from .SearchTextFileList import SearchTextFileList
 
 log = logging.getLogger("luigi-interface")
 
 
-@requires(SearchForProducts)
 class CreateSymlinks(luigi.Task):
     stateFolder = luigi.Parameter()
     productLocation = luigi.Parameter()
@@ -32,3 +32,17 @@ class CreateSymlinks(luigi.Task):
 
     def output(self):
         return luigi.LocalTarget(os.path.join(self.stateFolder, "CreateSymlinks.json"))
+
+
+@requires(SearchTextFileList)
+class CreateSymlinksFromTextFileList(CreateSymlinks):
+
+    def nullFunction(self):
+        pass
+
+
+@requires(SearchForProducts)
+class CreateSymlinksFromFilters(CreateSymlinks):
+
+    def nullFunction(self):
+        pass
