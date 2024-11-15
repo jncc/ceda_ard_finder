@@ -8,7 +8,6 @@ Find ARD in CEDA by searching using their Elasticsearch API.
 
 Create virtual env
 
-
 ```
 cd cd_ard_finder
 
@@ -22,21 +21,23 @@ pip install -r requirements.txt
 # Integrating this worklow into another using a python package
 
 ```
-pip install git+https://github.com/jncc/ceda_ard_finder.git
+pip install git+https://github.com/jncc/ceda_ard_finder.git@vx.x.x
 ```
+
+`vx.x.x` is the version and can be found in [tags](https://github.com/jncc/ceda_ard_finder/tags)
 
 Then import the required tasks into your workflow and use them:
 
 ```
 ...
-from ceda_ard_finder import CreateSymlinks
+from ceda_ard_finder import CreateSymlinksFromTextFileList, CreateSymlinksFromFilters
 
-@requires(CreateSymlinks)
+@requires(CreateSymlinksFromFilters)
 class GetArdProducts(luigi.Task):
     ...
 ```
 
-## Setup and runnning 
+## Setup and runnning
 
 All search filters are optional except startDate and endDate. See ceda-ard-finder-luigi.cfg.example for more filter examples.
 
@@ -49,7 +50,13 @@ LUIGI_CONFIG_PATH=ceda-ard-finder-luigi.cfg PYTHONPATH='.' luigi --module ceda_a
 Output results as symlinks to CEDA locations:
 
 ```
-LUIGI_CONFIG_PATH=ceda_ard_finder/ceda-ard-finder-luigi.cfg PYTHONPATH='.' luigi --module ceda_ard_finder CreateSymlinks --startDate=2021-01-01 --endDate=2021-01-31 --local-scheduler
+LUIGI_CONFIG_PATH=ceda_ard_finder/ceda-ard-finder-luigi.cfg PYTHONPATH='.' luigi --module ceda_ard_finder CreateSymlinksFromFilters --startDate=2021-01-01 --endDate=2021-01-31 --local-scheduler
+```
+
+Output results as symlinks to CEDA locations (Ingested from a [text file](./inputs.txt.example)):
+
+```
+LUIGI_CONFIG_PATH=ceda_ard_finder/ceda-ard-finder-luigi.cfg PYTHONPATH='.' luigi --module ceda_ard_finder CreateSymlinksFromTextFileList --startDate=2021-01-01 --endDate=2021-01-31 --local-scheduler
 ```
 
 Output results in a text file instead of symlinks.  The date range queried is included in the filename:
