@@ -37,7 +37,7 @@ class GetArdProducts(luigi.Task):
     ...
 ```
 
-## Setup and runnning
+## Setup and running
 
 All search filters are optional except startDate and endDate. See ceda-ard-finder-luigi.cfg.example for more filter examples.
 
