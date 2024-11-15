@@ -18,7 +18,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-# Integrating this worklow into another using a python package
+# Integrating this workflow into another using a python package
 
 ```
 pip install git+https://github.com/jncc/ceda_ard_finder.git@vx.x.x
