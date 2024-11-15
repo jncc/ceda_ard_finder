@@ -2,12 +2,10 @@ import luigi
 import json
 import os
 import logging
-import re
 
-from luigi.util import requires
-from .SearchForProducts import SearchForProducts
-from .CedaElasticsearchQueryer import CedaElasticsearchQueryer
 from datetime import datetime
+
+from .SearchForProducts import SearchForProducts
 
 log = logging.getLogger("luigi-interface")
 
