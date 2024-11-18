@@ -37,6 +37,10 @@ class CreateSymlinks(luigi.Task):
 @requires(SearchTextFileList)
 class CreateSymlinksFromTextFileList(CreateSymlinks):
 
+    # Creating symlinks needs stricter checks than just searching
+    noMissing = True
+    sameSatellite = True
+
     def nullFunction(self):
         pass
 

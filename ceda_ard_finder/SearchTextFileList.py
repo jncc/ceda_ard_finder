@@ -4,6 +4,7 @@ import os
 import logging
 
 from datetime import datetime
+from functional import seq
 
 from .SearchForProducts import SearchForProducts
 
@@ -18,11 +19,31 @@ class SearchTextFileList(luigi.Task):
     stateFolder = luigi.Parameter()
     productLocation = luigi.Parameter()
 
+    noMissing = luigi.BoolParameter(
+        description="If true, the task will fail if any of the products are not found",
+        default=False
+    )
+
+    sameSatellite = luigi.BoolParameter(
+        description="If true, the task will fail if the products are not all from the same satellite",
+        default=False
+    )
+
     def run(self):
         searchTasks = []
+        products = []
 
         with open(os.path.join(self.productLocation, "inputs.txt"), "r") as f:
             products = [x.strip() for x in f.read().splitlines()]
+
+        if self.sameSatellite:
+            satellites = seq(products) \
+                .map(lambda x: x[0:2]) \
+                .distinct() \
+                .to_list()
+
+            if len(satellites) != 1:
+                raise Exception(f"Products must all be from the same satellite. Found: {satellites}")
 
         # searchTask = SearchForProducts(
         #     stateFolder=self.stateFolder,
@@ -78,6 +99,10 @@ class SearchTextFileList(luigi.Task):
 
             output["count"] += count
             output["productList"].extend(productList)
+
+        if self.noMissing:
+            if len(output["missingProducts"]) > 0:
+                raise Exception(f"Missing products: {output['missingProducts']}")
 
         with self.output().open("w") as outFile:
             outFile.write(json.dumps(output, indent=4, sort_keys=True))
