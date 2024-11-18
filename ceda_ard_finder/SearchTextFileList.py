@@ -39,6 +39,9 @@ class SearchTextFileList(luigi.Task):
         #     pass
 
         for product in products:
+            if len(product) < 10:
+                raise Exception(f"Product names from inputs.txt must be at least 10 characters long: {product}")
+
             searchTasks.append(
                 SearchForProducts(
                     stateFolder=self.stateFolder,
