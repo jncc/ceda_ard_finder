@@ -21,6 +21,7 @@ pip install -r requirements.txt
 # Integrating this workflow into another using a python package
 
 Installing a specific version:
+
 ```
 pip install git+https://github.com/jncc/ceda_ard_finder.git@vx.x.x
 ```
@@ -73,3 +74,9 @@ Output results in a text file instead of symlinks.  The date range queried is in
 ```
 LUIGI_CONFIG_PATH=ceda_ard_finder/ceda-ard-finder-luigi.cfg PYTHONPATH='.' luigi --module ceda_ard_finder CreateTextFileList --startDate=2021-01-01 --endDate=2021-01-31 --local-scheduler
 ```
+
+## Misc Info
+
+- `spatialOperator` is a [required parameter](https://github.com/jncc/ceda_ard_finder/blob/a1834fc36ae756cbcf86ffae053fbb06832023da/ceda_ard_finder/SearchForProducts.py#L25). However, it will not be processed unless `wkt` is [also supplied](https://github.com/jncc/ceda_ard_finder/blob/a1834fc36ae756cbcf86ffae053fbb06832023da/ceda_ard_finder/SearchForProducts.py#L59-L60). If you don't intend to use `spatialOperator`, you can just set it to `intersects`. You do not have to supply a `wkt` parameter.
+
+- Do not supply a `ardFilter` without a `satelliteFilter` parmeter to the [SearchForProducts](https://github.com/jncc/ceda_ard_finder/blob/a1834fc36ae756cbcf86ffae053fbb06832023da/ceda_ard_finder/SearchForProducts.py#L77-L81) task unless searching for Sentinel-1/2 **ARD** products because the task will derive the `satelliteFilter` from the `ardFilter` if it is not supplied and this is only compatible with Sentinel-1/2 **ARD** product searches.
