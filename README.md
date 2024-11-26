@@ -66,7 +66,7 @@ LUIGI_CONFIG_PATH=ceda_ard_finder/ceda-ard-finder-luigi.cfg PYTHONPATH='.' luigi
 Output results as symlinks to CEDA locations (Ingested from a [text file](./inputs.txt.example)):
 
 ```
-LUIGI_CONFIG_PATH=ceda_ard_finder/ceda-ard-finder-luigi.cfg PYTHONPATH='.' luigi --module ceda_ard_finder CreateSymlinksFromTextFileList --startDate=2021-01-01 --endDate=2021-01-31 --local-scheduler
+LUIGI_CONFIG_PATH=ceda_ard_finder/ceda-ard-finder-luigi.cfg PYTHONPATH='.' luigi --module ceda_ard_finder CreateSymlinksFromTextFileList --local-scheduler
 ```
 
 Output results in a text file instead of symlinks.  The date range queried is included in the filename:
