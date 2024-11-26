@@ -20,6 +20,7 @@ pip install -r requirements.txt
 
 # Integrating this workflow into another using a python package
 
+Installing a specific version:
 ```
 pip install git+https://github.com/jncc/ceda_ard_finder.git@vx.x.x
 ```
@@ -35,6 +36,14 @@ from ceda_ard_finder import CreateSymlinksFromTextFileList, CreateSymlinksFromFi
 @requires(CreateSymlinksFromFilters)
 class GetArdProducts(luigi.Task):
     ...
+```
+
+Add to `requirements.txt` of your workflow
+
+```
+...
+ceda_ard_finder @ git+https://git@github.com/jncc/ceda_ard_finder.git@v0.0.1
+...
 ```
 
 ## Setup and running
