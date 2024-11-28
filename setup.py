@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="ceda_ard_finder",
-    version="0.0.1",
+    version="0.0.2",
     author="JNCC",
     author_email="developers@jncc.gov.uk",
     description="A luigi workflow to get ARD products from the CEDA archive",
