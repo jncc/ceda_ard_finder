@@ -3,6 +3,8 @@ import json
 import os
 import logging
 
+from tempfile import TemporaryDirectory
+
 from luigi.util import requires
 from .SearchForProducts import SearchForProducts
 from .SearchTextFileList import SearchTextFileList
@@ -21,7 +23,16 @@ class CreateSymlinks(luigi.Task):
 
         for product in products:
             symlinkPath = os.path.join(self.productLocation, os.path.basename(product))
-            os.symlink(product, symlinkPath)
+
+            try:
+                os.symlink(product, symlinkPath)
+            except FileExistsError:
+                log.info(f"Symlink already exists: {symlinkPath}. Overwriting...")
+
+                with TemporaryDirectory() as tempDir:
+                    tempSymlinkPath = os.path.join(tempDir, os.path.basename(product))
+                    os.symlink(product, tempSymlinkPath)
+                    os.replace(tempSymlinkPath, symlinkPath)
 
         output = {
             "products": products
