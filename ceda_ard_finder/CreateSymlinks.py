@@ -2,6 +2,7 @@ import luigi
 import json
 import os
 import logging
+import shutil
 
 from tempfile import TemporaryDirectory
 
@@ -32,7 +33,7 @@ class CreateSymlinks(luigi.Task):
                 with TemporaryDirectory() as tempDir:
                     tempSymlinkPath = os.path.join(tempDir, os.path.basename(product))
                     os.symlink(product, tempSymlinkPath)
-                    os.replace(tempSymlinkPath, symlinkPath)
+                    shutil.move(tempSymlinkPath, symlinkPath)
 
         output = {
             "products": products
