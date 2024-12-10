@@ -29,10 +29,8 @@ class CreateSymlinks(luigi.Task):
             except FileExistsError:
                 log.info(f"Symlink already exists: {symlinkPath}. Overwriting...")
 
-                with TemporaryDirectory() as tempDir:
-                    tempSymlinkPath = os.path.join(tempDir, os.path.basename(product))
-                    os.symlink(product, tempSymlinkPath)
-                    os.replace(tempSymlinkPath, symlinkPath)
+                os.remove(symlinkPath)
+                os.symlink(product, symlinkPath)
 
         output = {
             "products": products
