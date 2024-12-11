@@ -3,8 +3,6 @@ import json
 import os
 import logging
 
-from tempfile import TemporaryDirectory
-
 from luigi.util import requires
 from .SearchForProducts import SearchForProducts
 from .SearchTextFileList import SearchTextFileList
