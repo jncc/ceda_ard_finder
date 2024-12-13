@@ -21,7 +21,14 @@ class CreateSymlinks(luigi.Task):
 
         for product in products:
             symlinkPath = os.path.join(self.productLocation, os.path.basename(product))
-            os.symlink(product, symlinkPath)
+
+            try:
+                os.symlink(product, symlinkPath)
+            except FileExistsError:
+                log.info(f"Symlink already exists: {symlinkPath}. Overwriting...")
+
+                os.remove(symlinkPath)
+                os.symlink(product, symlinkPath)
 
         output = {
             "products": products
